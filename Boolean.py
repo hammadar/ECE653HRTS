@@ -17,4 +17,4 @@ class BooleanConstruct(tI.Construct):
         return "Bool"
 
     def __str__(self):
-        return str(self.construct)
+        return str(self.construct) + " "
