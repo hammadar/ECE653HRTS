@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class Construct(ABC):  ##derived class BV_ADD, FORALL, AND, ITE, etc.
 
-    def __init__(self): pass
+    def __init__(self, construct): pass
 
 
     def theory(self):   pass  # theory construct came from.
@@ -13,7 +13,7 @@ class Construct(ABC):  ##derived class BV_ADD, FORALL, AND, ITE, etc.
 
 
 class Literal(ABC):  ##derived literal class create BV, string, float, etc.
-    def __init__(self): pass
+    def __init__(self, name): pass
 
     def theory(self):   pass  # theory construct came from.
 
