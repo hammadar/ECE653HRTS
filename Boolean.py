@@ -17,7 +17,7 @@ class BooleanConstruct(tI.Construct):
         return "Bool"
 
     def __str__(self):
-        return str(self.construct) + " "
+        return str(self.construct)
 
 class BooleanLiteral(tI.Literal):
     def __init__(self, name):
@@ -25,7 +25,6 @@ class BooleanLiteral(tI.Literal):
             if ord(character) not in range(33, 127):
                 raise Exception("Illegal literal name.\n")
         self.name = name
-        self.con
 
     def theory(self):
         return "Core"
