@@ -19,3 +19,5 @@ for booleanLiteral in booleanLiterals:
     sys.stdout.write(booleanLiteral.gen())
 
 sys.stdout.write(assertion.outputAssertion())
+
+#useful for other theories like BV, strings etc

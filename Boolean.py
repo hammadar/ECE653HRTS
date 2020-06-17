@@ -3,7 +3,7 @@ import TheoryInterface as tI
 
 class BooleanConstruct(tI.Construct):
     def __init__(self, construct):
-        self.allowableConstructs = ["true", "false", "not", "=>", "and", "or", "xor", "par (A)"]
+        self.allowableConstructs = ["not", "=>", "and", "or", "xor", "par (A)"]
 
         if construct in self.allowableConstructs:
             self.construct = construct
@@ -19,7 +19,7 @@ class BooleanConstruct(tI.Construct):
     def __str__(self):
         return str(self.construct)
 
-class BooleanLiteral(tI.Literal):
+class BooleanVariable(tI.Literal):
     def __init__(self, name):
         for character in name:
             if ord(character) not in range(33, 127):
@@ -35,8 +35,14 @@ class BooleanLiteral(tI.Literal):
     def gen(self):
         return "(declare-fun " + self.name + " () Bool)\n"
 
+    #fun to output literal values?
+
+    def value(self):
+        return... #output Bool value
+
     def __str__(self, negation=False):
         if (not negation):
             return self.name
         return "not " + self.name
 
+#BV or strings next? Make random initaliser. Polish off this one here. Fuzz z3 with this (syntax errors).

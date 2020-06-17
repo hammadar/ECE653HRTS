@@ -12,7 +12,7 @@ class Construct(ABC):  ##derived class BV_ADD, FORALL, AND, ITE, etc.
     def __str__(self):  pass  # smt-lib repr
 
 
-class Literal(ABC):  ##derived literal class create BV, string, float, etc.
+class Variable(ABC):  ##derived literal class create BV, string, float, etc.
     def __init__(self, name): pass
 
     def theory(self):   pass  # theory construct came from.
@@ -21,8 +21,11 @@ class Literal(ABC):  ##derived literal class create BV, string, float, etc.
 
     def gen(self):      pass
 
+    def value(self):    pass
+
     def __str__(self):  pass  # smt-lib repr
 
+#add Literal Class
 
 class ASTNode(ABC):  ##AST node class,
     def __init__(self): pass
