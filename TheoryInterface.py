@@ -9,6 +9,8 @@ class Construct(ABC):  ##derived class BV_ADD, FORALL, AND, ITE, etc.
 
     def sort(self):     pass  # return type of construct.
 
+    def logic(self):    pass #return type of logic
+
     def __str__(self):  pass  # smt-lib repr
 
 

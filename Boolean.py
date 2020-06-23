@@ -16,10 +16,13 @@ class BooleanConstruct(tI.Construct):
     def sort(self):
         return "Bool"
 
+    def logic(self):
+        return "(set-logic QF_UF)\n"
+
     def __str__(self):
         return str(self.construct)
 
-class BooleanVariable(tI.Literal):
+class BooleanVariable(tI.Variable):
     def __init__(self, name):
         for character in name:
             if ord(character) not in range(33, 127):
@@ -37,8 +40,8 @@ class BooleanVariable(tI.Literal):
 
     #fun to output literal values?
 
-    def value(self):
-        return... #output Bool value
+    '''def value(self):
+        return... #output Bool value'''
 
     def __str__(self, negation=False):
         if (not negation):
