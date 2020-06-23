@@ -38,7 +38,7 @@ class smtAssertion:
         innerPair = smtPair.smtPair()
 
         if (left):
-            innerPair.setLHS(random.choice(self.smtBooleans))
+            innerPair.setLHS(random.choice(self.smtBooleans)) #incorporate negation
             innerPair.setRHS(random.choice(self.smtBooleans))
             innerPair.setOperation(random.choice(self.operations))
             pair.setLHS(innerPair)
