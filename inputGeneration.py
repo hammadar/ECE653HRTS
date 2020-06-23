@@ -9,8 +9,10 @@ logic = ""
 booleanLiterals = []
 booleanConstructs = []
 
-for literal in literals:
-    booleanLiterals.append(Boolean.BooleanVariable(literal)) #randomise picking of literals
+literals_sample_size=random.randrange(2,25)
+
+for literal in random.sample(literals, literals_sample_size):
+    booleanLiterals.append(Boolean.BooleanVariable(literal)) 
 
 for construct in constructs:
     booleanConstructs.append(Boolean.BooleanConstruct(construct))
