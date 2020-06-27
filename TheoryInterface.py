@@ -11,6 +11,8 @@ class Construct(ABC):  ##derived class BV_ADD, FORALL, AND, ITE, etc.
 
     def logic(self):    pass #return type of logic
 
+    def setConstruct(self, construct):  pass
+
     def __str__(self):  pass  # smt-lib repr
 
 

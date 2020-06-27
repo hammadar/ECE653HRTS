@@ -2,13 +2,16 @@ from abc import ABC, abstractmethod
 import TheoryInterface as tI
 
 class BooleanConstruct(tI.Construct):
-    def __init__(self, construct):
+    def __init__(self):
         self.allowableConstructs = ["not", "=>", "and", "or", "xor", "par (A)"]
 
+
+
+    def setConstruct(self, construct):
         if construct in self.allowableConstructs:
             self.construct = construct
         else:
-            raise Exception("Incorrect construct for type Bool\n")
+            raise Exception("Illegal construct. Try again\n")
 
     def theory(self):
         return "Core"
