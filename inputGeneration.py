@@ -23,7 +23,7 @@ class InputGenerator:
             BVConstruct = BV.BVConstruct()
             self.allowableConstructs = BVConstruct.allowableConstructs
             self.constructClass = BVConstruct
-        self.logic = self.constructClass.logic
+        self.logic = self.constructClass.logic()
 
 
 
@@ -34,12 +34,34 @@ class InputGenerator:
                 self.literals.append(Boolean.BooleanVariable(literal))
         elif self.type == "BV":
             for literal in random.sample(self.allowableLiterals, literals_sample_size):
-                self.literals.append(BV.BVVariable(literal))
+                self.literals.append(BV.BVVariable(literal, 32))
+
+    def generateAssertions(self):
+        assertion = smtAssertion.smtAssertion(self.literals, self.allowableConstructs, self.type)
+        self.assertion = assertion
+
+    def declareLiterals(self):
+        for literal in self.literals:
+            sys.stdout.write(literal.gen())
+
+    def outputAssertions(self, num):
+        for i in range(random.randrange(1,num)):
+            self.assertion.generatePairs()
+            sys.stdout.write(self.assertion.outputAssertion())
 
 
 
     def setLogic(self):
         sys.stdout.write(self.logic)
+
+    def generateFile(self, num):
+        self.generateLiterals()
+        self.setupConstructs()
+        self.setLogic()
+        self.generateAssertions()
+        self.declareLiterals()
+        self.outputAssertions(num)
+        sys.stdout.write("(check-sat)\n")
 
 
 
@@ -72,6 +94,5 @@ sys.stdout.write("(check-sat)")'''
 
 #target BV next week
 
-inputGenerator = InputGenerator("Boolean")
-inputGenerator.generateLiterals()
-inputGenerator.setLogic()
+inputGenerator = InputGenerator("BV")
+inputGenerator.generateFile(2)

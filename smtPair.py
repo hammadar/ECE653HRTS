@@ -3,10 +3,11 @@ import random
 class smtPair:
     lhs = None
     rhs = None
+    third = None
     operation = None
 
-    def __init__(self):
-        pass
+    def __init__(self, type="Boolean"):
+        self.type=type
 
     def setLHS(self, lhs):
         self.lhs = lhs
@@ -14,13 +15,25 @@ class smtPair:
     def setRHS(self, rhs):
         self.rhs = rhs
 
+    '''def setThird(self, third):
+        if self.type == "Boolean":
+            raise Exception("Cannot add third variable with type {}\n")
+            return
+        self.third = third'''
+
     def setOperation(self, operation):
         self.operation = operation
 
     def outputPair(self):
+
         expressionToReturn = "(" + self.operation.__str__() + " "
         left_neg = random.choice([False,True])
         right_neg = random.choice([False, True])
+
+        if self.type == "Boolean":
+            negation = "not"
+        else:
+            negation = "bvnot"
 
         if (isinstance(self.lhs, smtPair)):
             expressionToReturn += self.lhs.outputPair()
@@ -28,7 +41,7 @@ class smtPair:
             if not left_neg:
                 expressionToReturn += self.lhs.__str__()
             else:
-                expressionToReturn += "(not " + self.lhs.__str__() + ")"
+                expressionToReturn += "(" + negation + " " + self.lhs.__str__() + ")"
 
         expressionToReturn += " "
 
@@ -38,7 +51,7 @@ class smtPair:
             if not right_neg:
                 expressionToReturn += self.rhs.__str__()
             else:
-                expressionToReturn += "(not " + self.rhs.__str__() + ")"
+                expressionToReturn += "(" + negation + " " + self.rhs.__str__() + ")"
 
         expressionToReturn += ")"
         return expressionToReturn

@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 import TheoryInterface as tI
 
 class BVConstruct(tI.Construct):
-    def __init__(self, construct):
-        self.allowableConstructs = ["concat", "_ extract", "bvnot", "bvneg", "bvand", "bvor", "bvadd", "bvmul", "bvudiv", "bvurem", "bvshl", "bvlshr"]
+    def __init__(self):
+        self.allowableConstructs = ["bvand", "bvor"] #, "bvadd", "bvmul", "bvudiv", "bvurem", "bvshl", "bvlshr"]
 
 
     def setConstruct(self, construct):
@@ -43,4 +43,10 @@ class BVVariable(tI.Variable):
         return "_ Bitvec"
 
     def gen(self):
-        return "declare-fun " + self.name + " () (" + BVConstruct.sort() + " " + str(self.size) + "))\n"
+        return "(declare-const " + self.name + " (_ BitVec" + " " + str(self.size) + "))\n"
+
+    def __str__(self, negation=False):
+        if not negation:
+            return self.name
+        else:
+            return "bvnot " + self.name
