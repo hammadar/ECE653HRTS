@@ -9,7 +9,7 @@ class smtAssertion:
     operations = []
     smtPairs = smtPair.smtPair
 
-    def __init__(self, smtBooleans,smtConstructs):
+    def __init__(self, smtBooleans,smtConstructs, type):
 
         if smtBooleans is None:
             sys.stderr.write("Error in inputs\n")
@@ -17,25 +17,34 @@ class smtAssertion:
 
         self.smtBooleans = smtBooleans
         self.operations=smtConstructs
+        self.type = type
         self.generatePairs()
         
 
     def generatePairs(self):
-        numPairs = random.choice(range(1,10))
+        numPairs = random.choice(range(1,2))
         self.smtPairs = self.generateNewPairs(0, numPairs)
 
 
     def outputAssertion(self):
-        assertion = "(assert "
-        assertion += self.smtPairs.outputPair()
-        assertion += ")\n"
+        if self.type == "Boolean":
+            assertion = "(assert "
+            assertion += self.smtPairs.outputPair()
+            assertion += ")\n"
+        elif self.type == "BV":
+            assertion = "(assert (= "
+            assertion += self.smtPairs.outputPair()
+            assertion += ""
+            self.generatePairs()
+            assertion += self.smtPairs.outputPair()
+            assertion += "))\n"
 
         return assertion
 
     def generateNewPairs(self,i, numPairs):
         left = random.choice([False, True])
-        pair = smtPair.smtPair()
-        innerPair = smtPair.smtPair()
+        pair = smtPair.smtPair(self.type)
+        innerPair = smtPair.smtPair(self.type)
 
         if (left):
             innerPair.setLHS(random.choice(self.smtBooleans)) #incorporate negation
