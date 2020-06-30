@@ -59,7 +59,6 @@ class smtAssertion:
                 pair.setLHS(innerPair)
                 pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
 
-
             if i == (numPairs-1):
                 pair.setRHS(random.choice(self.smtBooleans))
             else:
