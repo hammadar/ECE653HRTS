@@ -12,7 +12,6 @@ class InputGenerator:
         self.setupConstructs()
         self.literals = []
         self.constructs = []
-        self.generateLiterals()
 
     def setupConstructs(self):
         if self.type == "Boolean":
@@ -24,8 +23,6 @@ class InputGenerator:
             self.allowableConstructs = BVConstruct.allowableConstructs
             self.constructClass = BVConstruct
         self.logic = self.constructClass.logic()
-
-
 
     def generateLiterals(self):
         literals_sample_size = random.randrange(2,25)
@@ -63,36 +60,6 @@ class InputGenerator:
         self.outputAssertions(num)
         sys.stdout.write("(check-sat)\n")
 
-
-
-#constructs = ["=>", "and", "or", "xor"]
-
-#booleanLiterals = []
-#booleanConstructs = []
-
-'''literals_sample_size=random.randrange(2,25)
-
-for literal in random.sample(literals, literals_sample_size):
-    booleanLiterals.append(Boolean.BooleanVariable(literal)) 
-
-for construct in constructs:
-    booleanConstructs.append(Boolean.BooleanConstruct(construct))
-
-sys.stdout.write(booleanConstructs[0].logic())'''
-
-'''assertion = smtAssertion.smtAssertion(booleanLiterals,booleanConstructs)
-
-for booleanLiteral in booleanLiterals:
-    sys.stdout.write(booleanLiteral.gen())
-
-for i in range(random.randrange(1,25)):
-    assertion.generatePairs()
-    sys.stdout.write(assertion.outputAssertion())
-
-#sys.stdout.write(assertion.outputAssertion())
-sys.stdout.write("(check-sat)")'''
-
-#target BV next week
-
 inputGenerator = InputGenerator("BV")
+# inputGenerator = InputGenerator("Boolean")
 inputGenerator.generateFile(2)

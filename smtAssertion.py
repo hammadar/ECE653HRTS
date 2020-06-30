@@ -41,7 +41,7 @@ class smtAssertion:
 
         return assertion
 
-    def generateNewPairs(self,i, numPairs):
+    def generateNewPairs(self, i, numPairs):
         left = random.choice([False, True])
         pair = smtPair.smtPair(self.type)
         innerPair = smtPair.smtPair(self.type)
@@ -49,9 +49,16 @@ class smtAssertion:
         if (left):
             innerPair.setLHS(random.choice(self.smtBooleans)) #incorporate negation
             innerPair.setRHS(random.choice(self.smtBooleans))
-            innerPair.setOperation(random.choice(self.operations))
-            pair.setLHS(innerPair)
-            pair.setOperation(random.choice(self.operations))
+
+            if(self.type == "Boolean"):
+                innerPair.setOperation(random.choice(self.operations))
+                pair.setLHS(innerPair)
+                pair.setOperation(random.choice(self.operations))
+            else:
+                innerPair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
+                pair.setLHS(innerPair)
+                pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
+
             if i == (numPairs-1):
                 pair.setRHS(random.choice(self.smtBooleans))
             else:
@@ -59,7 +66,10 @@ class smtAssertion:
             return pair
         else:
             pair.setLHS(random.choice(self.smtBooleans))
-            pair.setOperation(random.choice(self.operations))
+            if(self.type == "Boolean"):
+                pair.setOperation(random.choice(self.operations))
+            else:
+                pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
             pair.setRHS(random.choice(self.smtBooleans))
             if i == (numPairs-1):
                 pair.setRHS(random.choice(self.smtBooleans))
