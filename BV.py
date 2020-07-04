@@ -41,7 +41,7 @@ class BVVariable(tI.Variable):
         return "FixedSizeBitVectors"
 
     def sort(self):
-        return "_ Bitvec"
+        return "_ BitVec"
 
     def gen(self):
         return "(declare-const " + self.name + " (_ BitVec" + " " + str(self.size) + "))\n"

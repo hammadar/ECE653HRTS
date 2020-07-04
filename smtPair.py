@@ -2,7 +2,9 @@ import random
 
 class smtPair:
     lhs = None
+    left_neg = None
     rhs = None
+    right_neg = None
     third = None
     operation = None
 
@@ -27,8 +29,6 @@ class smtPair:
     def outputPair(self):
 
         expressionToReturn = "(" + self.operation.__str__() + " "
-        left_neg = random.choice([False,True])
-        right_neg = random.choice([False, True])
 
         if self.type == "Boolean":
             negation = "not"
@@ -38,7 +38,7 @@ class smtPair:
         if (isinstance(self.lhs, smtPair)):
             expressionToReturn += self.lhs.outputPair()
         else:
-            if not left_neg:
+            if not self.left_neg:
                 expressionToReturn += self.lhs.__str__()
             else:
                 expressionToReturn += "(" + negation + " " + self.lhs.__str__() + ")"
@@ -48,10 +48,13 @@ class smtPair:
         if (isinstance(self.rhs, smtPair)):
             expressionToReturn += self.rhs.outputPair()
         else:
-            if not right_neg:
+            if not self.right_neg:
                 expressionToReturn += self.rhs.__str__()
             else:
                 expressionToReturn += "(" + negation + " " + self.rhs.__str__() + ")"
 
         expressionToReturn += ")"
         return expressionToReturn
+
+
+

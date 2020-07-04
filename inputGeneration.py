@@ -12,6 +12,7 @@ class InputGenerator:
         self.setupConstructs()
         self.literals = []
         self.constructs = []
+        self.assertions = []
 
     def setupConstructs(self):
         if self.type == "Boolean":
@@ -37,6 +38,7 @@ class InputGenerator:
         assertion = smtAssertion.smtAssertion(self.literals, self.allowableConstructs, self.type)
         self.assertion = assertion
 
+
     def declareLiterals(self):
         for literal in self.literals:
             sys.stdout.write(literal.gen())
@@ -45,6 +47,15 @@ class InputGenerator:
         for i in range(random.randrange(1,num)):
             self.assertion.generatePairs()
             sys.stdout.write(self.assertion.outputAssertion())
+            self.assertions.append(copy.copy(self.assertion)) #store assertions with generated pairs for later mutation
+            self.assertion.resetPairs()
+
+    def mutateAssertions(self, operator):
+        for i in range(len(self.assertions)):
+            self.assertions[i].mutate_operator(operator)
+        for assertion in self.assertions:
+            sys.stdout.write(assertion.outputAssertion(False))
+
 
 
 
@@ -60,6 +71,7 @@ class InputGenerator:
         self.outputAssertions(num)
         sys.stdout.write("(check-sat)\n")
 
-inputGenerator = InputGenerator("BV")
+inputGenerator = InputGenerator("Boolean")
 # inputGenerator = InputGenerator("Boolean")
-inputGenerator.generateFile(2)
+inputGenerator.generateFile(5)
+inputGenerator.mutateAssertions("and")
