@@ -3,8 +3,10 @@ import TheoryInterface as tI
 
 class BVConstruct(tI.Construct):
     def __init__(self):
-        self.allowableConstructs = [["bvand", "bvor","bvnand","bvnor","bvxnor"], #Bitwise operations
-                                ["bvadd","bvsub","bvmul","bvudiv","bvurem","bvsrem","bvsmod","bvshl","bvlshr","bvashr"]] #Arithmetic operations
+        self.allowableConstructs = [["bvand", "bvor","bvnand","bvnor","bvxnor","bvxor"], #Bitwise operations
+                                ["bvadd","bvsub","bvmul","bvudiv","bvurem","bvsrem","bvsmod","bvshl","bvlshr","bvashr","bvsdiv"], #Arithmetic operations
+                                ["bvult","bvule","bvugt","bvuge","bvslt","bvsle","bvsgt","bvsge" ]] #Binary prediacate operations
+                                 # "bvcomp","bvxor","concat"], #
 
 
     def setConstruct(self, construct):

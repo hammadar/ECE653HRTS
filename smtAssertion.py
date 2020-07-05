@@ -20,32 +20,37 @@ class smtAssertion:
         self.smtBooleans = smtBooleans
         self.operations=smtConstructs
         self.type = type
-        self.generatePairs(k=0,depth=depth)
+        self.generatePairs(bvBinaryPredicate=False,k=0,depth=depth)
         
 
-    def generatePairs(self, k=0,depth=2): #k is necessary since the BV version requires two statements to compare
+    def generatePairs(self, bvBinaryPredicate, k=0,depth=2): #k is necessary since the BV version requires two statements to compare
         numPairs = random.choice(range(1,depth))
-        self.smtPairs[k] = self.generateNewPairs(0, numPairs)
+        self.smtPairs[k] = self.generateNewPairs(0, numPairs, bvBinaryPredicate)
         self.depth[k]= numPairs
 
 
-    def outputAssertion(self, regenerate=True): #added regenerate to differentiate cases where you're reproducing the assertion to mutate
+    def outputAssertion(self,bvBinaryPredicate, regenerate=True): #added regenerate to differentiate cases where you're reproducing the assertion to mutate
+        
         if self.type == "Boolean":
             assertion = "(assert "
             assertion += self.smtPairs[0].outputPair()
             assertion += ")\n"
         elif self.type == "BV":
-            assertion = "(assert (= "
+            if(bvBinaryPredicate == True):
+                assertion = "(assert "
+                regenerate = False
+            else:
+                assertion = "(assert (= "
             assertion += self.smtPairs[0].outputPair()
             assertion += " " #might need to remove - HR
             if regenerate: #for case of BV where you need to compare two statements
-                self.generatePairs(k=1)
+                self.generatePairs(bvBinaryPredicate,k=1)
             assertion += self.smtPairs[1].outputPair()
             assertion += "))\n"
 
         return assertion
 
-    def generateNewPairs(self, i, numPairs):
+    def generateNewPairs(self, i, numPairs, bvBinaryPredicate):
         left = random.choice([False, True])
         pair = smtPair.smtPair(self.type)
         innerPair = smtPair.smtPair(self.type)
@@ -62,16 +67,21 @@ class smtAssertion:
                 pair.setOperation(random.choice(self.operations))
                 pair.left_neg = random.choice([True, False])
             else:
-                innerPair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
-                pair.setLHS(innerPair)
-                pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
+                if (bvBinaryPredicate == True):
+                    innerPair.setOperation(random.choice(self.operations[2]))
+                    pair.setLHS(innerPair)
+                    pair.setOperation(random.choice(self.operations[2]))
+                else:
+                    innerPair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
+                    pair.setLHS(innerPair)
+                    pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
                 pair.left_neg = random.choice([True, False])
-
+            
             if i == (numPairs-1):
                 pair.setRHS(random.choice(self.smtBooleans))
                 pair.right_neg = random.choice([True, False])
             else:
-                pair.setRHS(self.generateNewPairs(i+1, numPairs))
+                pair.setRHS(self.generateNewPairs(i+1, numPairs, bvBinaryPredicate))
                 pair.right_neg = random.choice([True, False])
             return pair
         else:
@@ -80,14 +90,17 @@ class smtAssertion:
             if(self.type == "Boolean"):
                 pair.setOperation(random.choice(self.operations))
             else:
-                pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
+                if (bvBinaryPredicate == True):
+                    innerPair.setOperation(random.choice(self.operations[2]))
+                else:
+                    innerPair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
             pair.setRHS(random.choice(self.smtBooleans))
             pair.right_neg = random.choice([True, False])
             if i == (numPairs-1):
                 pair.setRHS(random.choice(self.smtBooleans))
                 pair.right_neg = random.choice([True, False])
             else:
-                pair.setRHS(self.generateNewPairs(i+1, numPairs))
+                pair.setRHS(self.generateNewPairs(i+1, numPairs, bvBinaryPredicate))
                 pair.right_neg = random.choice([True, False])
             return pair
 
