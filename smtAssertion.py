@@ -23,7 +23,7 @@ class smtAssertion:
         self.generatePairs(bvBinaryPredicate=False,k=0,depth=depth)
         
 
-    def generatePairs(self, bvBinaryPredicate, k=0,depth=2): #k is necessary since the BV version requires two statements to compare
+    def generatePairs(self, bvBinaryPredicate, k=0,depth=2): #k is necessary since the BV version requires two statements to compare. k=0
         numPairs = random.choice(range(1,depth))
         self.smtPairs[k] = self.generateNewPairs(0, numPairs, bvBinaryPredicate)
         self.depth[k]= numPairs
@@ -42,7 +42,7 @@ class smtAssertion:
             else:
                 assertion = "(assert (= "
             assertion += self.smtPairs[0].outputPair()
-            assertion += " " #might need to remove - HR
+            #assertion += " " #might need to remove - HR
             if regenerate: #for case of BV where you need to compare two statements
                 self.generatePairs(bvBinaryPredicate,k=1)
             if(bvBinaryPredicate == False):
@@ -123,7 +123,8 @@ class smtAssertion:
                 return
             allowableConstructs = bVConstruct.allowableConstructs
             for i in range(len(self.smtPairs)):
-                self.smtPairs[i] = self.bV_mutate(self.smtPairs[i], operator, allowableConstructs)
+                if self.smtPairs[i] is not None:
+                    self.smtPairs[i] = self.bV_mutate(self.smtPairs[i], operator, allowableConstructs)
 
 
 
@@ -145,6 +146,8 @@ class smtAssertion:
             if operator in allowableConstructs[0] and pair.operation in allowableConstructs[0]:
                 pair.operation = operator
             elif operator in allowableConstructs[1] and pair.operation in allowableConstructs[1]:
+                pair.operation = operator
+            elif operator in allowableConstructs[2] and pair.operation in allowableConstructs[2]:
                 pair.operation = operator
 
         if isinstance(pair.lhs, smtPair.smtPair):

@@ -45,7 +45,7 @@ class InputGenerator:
     def outputAssertions(self, num):
         for i in range(random.randrange(1,num)):
             bvBinaryPredicate=random.choice([False, True])
-            self.assertion.generatePairs(bvBinaryPredicate)
+            self.assertion.generatePairs(bvBinaryPredicate, depth=num)
             sys.stdout.write(self.assertion.outputAssertion(bvBinaryPredicate))
             self.assertions.append(copy.copy(self.assertion)) #store assertions with generated pairs for later mutation
             self.assertion.resetPairs()
@@ -54,7 +54,11 @@ class InputGenerator:
         for i in range(len(self.assertions)):
             self.assertions[i].mutate_operator(operator)
         for assertion in self.assertions:
-            sys.stdout.write(assertion.outputAssertion(False))
+            if assertion.smtPairs[0].operation in self.allowableConstructs[2]:
+                bvPredicate = True
+            else:
+                bvPredicate = False
+            sys.stdout.write(assertion.outputAssertion(bvPredicate,regenerate=False))
 
     def setLogic(self):
         sys.stdout.write(self.logic)
@@ -69,6 +73,6 @@ class InputGenerator:
         sys.stdout.write("(check-sat)\n")
 
 inputGenerator = InputGenerator("BV")
-# inputGenerator = InputGenerator("Boolean")
+#inputGenerator = InputGenerator("Boolean")
 inputGenerator.generateFile(5)
-# inputGenerator.mutateAssertions("and")
+inputGenerator.mutateAssertions("bvand")
