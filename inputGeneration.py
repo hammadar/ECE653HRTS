@@ -38,7 +38,6 @@ class InputGenerator:
         assertion = smtAssertion.smtAssertion(self.literals, self.allowableConstructs, self.type)
         self.assertion = assertion
 
-
     def declareLiterals(self):
         for literal in self.literals:
             sys.stdout.write(literal.gen())
@@ -56,9 +55,6 @@ class InputGenerator:
             self.assertions[i].mutate_operator(operator)
         for assertion in self.assertions:
             sys.stdout.write(assertion.outputAssertion(False))
-
-
-
 
     def setLogic(self):
         sys.stdout.write(self.logic)

@@ -47,7 +47,9 @@ class smtAssertion:
                 self.generatePairs(bvBinaryPredicate,k=1)
             if(bvBinaryPredicate == False):
                 assertion += self.smtPairs[1].outputPair()
-            assertion += "))\n"
+                assertion += "))\n"
+            else:
+                assertion += ")\n"
 
         return assertion
 
@@ -68,14 +70,11 @@ class smtAssertion:
                 pair.setOperation(random.choice(self.operations))
                 pair.left_neg = random.choice([True, False])
             else:
+                innerPair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
+                pair.setLHS(innerPair)
                 if (bvBinaryPredicate == True):
-                    # print("self.operations[2]=",self.operations[2])
-                    innerPair.setOperation(random.choice(self.operations[2]))
-                    pair.setLHS(innerPair)
                     pair.setOperation(random.choice(self.operations[2]))
                 else:
-                    innerPair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
-                    pair.setLHS(innerPair)
                     pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
                 pair.left_neg = random.choice([True, False])
             
@@ -93,9 +92,9 @@ class smtAssertion:
                 pair.setOperation(random.choice(self.operations))
             else:
                 if (bvBinaryPredicate == True):
-                    innerPair.setOperation(random.choice(self.operations[2]))
+                    pair.setOperation(random.choice(self.operations[2]))
                 else:
-                    innerPair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
+                    pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
             pair.setRHS(random.choice(self.smtBooleans))
             pair.right_neg = random.choice([True, False])
             if i == (numPairs-1):
@@ -118,7 +117,7 @@ class smtAssertion:
 
         elif self.type == "BV":
             bVConstruct = BV.BVConstruct()
-            #allowableshit = bVConstruct.allowableConstructs[:]
+            #allowablestuff = bVConstruct.allowableConstructs[:]
             if not any(operator in subl for subl in bVConstruct.allowableConstructs):
                 raise Exception("Illegal operator for type BV\n")
                 return
