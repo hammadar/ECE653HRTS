@@ -3,7 +3,7 @@ import TheoryInterface as tI
 
 class BooleanConstruct(tI.Construct):
     def __init__(self):
-        self.allowableConstructs = ["not", "=>", "and", "or", "xor", "par (A)"]
+        self.allowableConstructs = ["=>", "and", "or", "xor"]
 
 
 
