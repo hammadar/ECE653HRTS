@@ -25,6 +25,7 @@ class smtPair:
 
     def setOperation(self, operation):
         self.operation = operation
+        print("operation=",operation)
 
     def outputPair(self):
 

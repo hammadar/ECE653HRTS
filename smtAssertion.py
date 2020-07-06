@@ -45,7 +45,8 @@ class smtAssertion:
             assertion += " " #might need to remove - HR
             if regenerate: #for case of BV where you need to compare two statements
                 self.generatePairs(bvBinaryPredicate,k=1)
-            assertion += self.smtPairs[1].outputPair()
+            if(bvBinaryPredicate == False):
+                assertion += self.smtPairs[1].outputPair()
             assertion += "))\n"
 
         return assertion
@@ -68,6 +69,7 @@ class smtAssertion:
                 pair.left_neg = random.choice([True, False])
             else:
                 if (bvBinaryPredicate == True):
+                    # print("self.operations[2]=",self.operations[2])
                     innerPair.setOperation(random.choice(self.operations[2]))
                     pair.setLHS(innerPair)
                     pair.setOperation(random.choice(self.operations[2]))
