@@ -76,3 +76,9 @@ inputGenerator = InputGenerator("BV")
 #inputGenerator = InputGenerator("Boolean")
 inputGenerator.generateFile(5)
 inputGenerator.mutateAssertions("bvand")
+
+'''TS - combine bitwise and arithmetic operation mutation into one level. Include all references
+HR - aridity (number of inputs required for each oeprator). Add aridity attribute in interface, expand to BV and Boolean, then accomodate when generating assert statement
+TS - flag for chainability (undetermined number of args for an operator)
+HR - change mutate to only mutate one operator per assert statement. Will require smtAssertion traversal function. 
+TS - change mutate to regenerate new complete file'''
