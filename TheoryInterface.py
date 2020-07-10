@@ -13,6 +13,8 @@ class Construct(ABC):  ##derived class BV_ADD, FORALL, AND, ITE, etc.
 
     def setConstruct(self, construct):  pass
 
+    def arity(self):  pass #return number of operators required
+
     def __str__(self):  pass  # smt-lib repr
 
 

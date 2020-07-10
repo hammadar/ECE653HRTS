@@ -19,10 +19,12 @@ class InputGenerator:
             BoolConstruct = Boolean.BooleanConstruct()
             self.allowableConstructs = BoolConstruct.allowableConstructs
             self.constructClass = BoolConstruct
+            self.arity = BoolConstruct.arity()
         elif self.type == "BV":
             BVConstruct = BV.BVConstruct()
             self.allowableConstructs = BVConstruct.allowableConstructs
             self.constructClass = BVConstruct
+            self.arity = BVConstruct.arity()
         self.logic = self.constructClass.logic()
 
     def generateLiterals(self):
@@ -45,7 +47,7 @@ class InputGenerator:
     def outputAssertions(self, num):
         for i in range(random.randrange(1,num)):
             bvBinaryPredicate=random.choice([False, True])
-            self.assertion.generatePairs(bvBinaryPredicate, depth=num)
+            self.assertion.generatePairs(bvBinaryPredicate, depth=num, arity=self.arity)
             sys.stdout.write(self.assertion.outputAssertion(bvBinaryPredicate))
             self.assertions.append(copy.copy(self.assertion)) #store assertions with generated pairs for later mutation
             self.assertion.resetPairs()

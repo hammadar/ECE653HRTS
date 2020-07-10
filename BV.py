@@ -24,6 +24,11 @@ class BVConstruct(tI.Construct):
     def logic(self):
         return "(set-logic QF_BV)\n"
 
+    def arity(self):
+        '''if self.construct in self.allowableConstructs[0] or self.construct in self.allowableConstructs[1] or self.construct in self.allowableConstructs[2]:
+            return 2'''
+        return 2
+
     def __str__(self):
         return self.construct
 
