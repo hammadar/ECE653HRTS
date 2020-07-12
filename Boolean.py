@@ -19,6 +19,9 @@ class BooleanConstruct(tI.Construct):
     def sort(self):
         return "Bool"
 
+    def arity(self):
+        return 2
+
     def logic(self):
         return "(set-logic QF_UF)\n"
 
