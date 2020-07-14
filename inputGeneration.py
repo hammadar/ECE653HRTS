@@ -41,8 +41,12 @@ class InputGenerator:
         self.assertion = assertion
 
     def declareLiterals(self):
+        f = open("mutatedAssertions", "a")
         for literal in self.literals:
-            sys.stdout.write(literal.gen())
+            generatedLiteral = literal.gen()
+            sys.stdout.write(generatedLiteral)
+            f.write(generatedLiteral)
+        f.close()
 
     def outputAssertions(self, num):
         for i in range(random.randrange(1,num)):
@@ -53,17 +57,24 @@ class InputGenerator:
             self.assertion.resetPairs()
 
     def mutateAssertions(self, operator):
+        f = open("mutatedAssertions", "a")
         for i in range(len(self.assertions)):
             self.assertions[i].mutate_operator(operator)
         for assertion in self.assertions:
-            if assertion.smtPairs[0].operation in self.allowableConstructs[2]:
+            if assertion.smtPairs[0].operation in self.allowableConstructs[1]:
                 bvPredicate = True
             else:
                 bvPredicate = False
-            sys.stdout.write(assertion.outputAssertion(bvPredicate,regenerate=False))
+            mutatedAssertion = assertion.outputAssertion(bvPredicate,regenerate=False)
+            sys.stdout.write(mutatedAssertion)
+            f.write(mutatedAssertion)
+        f.close()
 
     def setLogic(self):
+        f = open("mutatedAssertions", "w")
         sys.stdout.write(self.logic)
+        f.write(self.logic)
+        f.close()
 
     def generateFile(self, num):
         self.generateLiterals()
@@ -74,10 +85,16 @@ class InputGenerator:
         self.outputAssertions(num)
         sys.stdout.write("(check-sat)\n")
 
+
+
 inputGenerator = InputGenerator("BV")
 #inputGenerator = InputGenerator("Boolean")
 inputGenerator.generateFile(5)
 inputGenerator.mutateAssertions("bvand")
+
+f = open("mutatedAssertions", "a")
+f.write("(check-sat)\n")
+f.close()
 
 '''TS - combine bitwise and arithmetic operation mutation into one level. Include all references
 HR - aridity (number of inputs required for each oeprator). Add aridity attribute in interface, expand to BV and Boolean, then accomodate when generating assert statement

@@ -28,6 +28,9 @@ class BooleanConstruct(tI.Construct):
     def __str__(self):
         return str(self.construct)
 
+    def chainability(self):
+        return False
+
 class BooleanVariable(tI.Variable):
     def __init__(self, name):
         for character in name:

@@ -3,8 +3,8 @@ import TheoryInterface as tI
 
 class BVConstruct(tI.Construct):
     def __init__(self):
-        self.allowableConstructs = [["bvand", "bvor","bvnand","bvnor","bvxnor","bvxor"], #Bitwise operations
-                                ["bvadd","bvsub","bvmul","bvudiv","bvurem","bvsrem","bvsmod","bvshl","bvlshr","bvashr","bvsdiv"], #Arithmetic operations
+        self.allowableConstructs = [["bvand", "bvor","bvnand","bvnor","bvxnor","bvxor", #Bitwise operations
+                                "bvadd","bvsub","bvmul","bvudiv","bvurem","bvsrem","bvsmod","bvshl","bvlshr","bvashr","bvsdiv"], #Arithmetic operations
                                 ["bvult","bvule","bvugt","bvuge","bvslt","bvsle","bvsgt","bvsge" ]] #Binary prediacate operations
                                  # "bvcomp","bvxor","concat"], #
 
@@ -31,6 +31,9 @@ class BVConstruct(tI.Construct):
 
     def __str__(self):
         return self.construct
+
+    def chainability(self):
+        return False
 
 class BVVariable(tI.Variable):
     def __init__(self, name, size):
