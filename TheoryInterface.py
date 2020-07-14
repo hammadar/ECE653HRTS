@@ -15,6 +15,8 @@ class Construct(ABC):  ##derived class BV_ADD, FORALL, AND, ITE, etc.
 
     def arity(self):  pass #return number of operators required
 
+    def chainability(self):  pass #return true of arguments for operator are not fixed
+
     def __str__(self):  pass  # smt-lib repr
 
 

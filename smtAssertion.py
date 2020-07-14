@@ -58,64 +58,42 @@ class smtAssertion:
         pair = smtPair.smtPair(self.type, arity)
         innerPair = smtPair.smtPair(self.type, arity)
 
-
         if (left):
-            #innerPair.setLHS(random.choice(self.smtBooleans)) #incorporate negation
-            #innerPair.left_neg = random.choice([True, False])
-            #innerPair.setRHS(random.choice(self.smtBooleans))
-            #innerPair.right_neg = random.choice([True, False])
-
             innerNodes = random.sample(self.smtBooleans, arity)
             innerPair.setSubNodes(innerNodes)
 
-
             if(self.type == "Boolean"):
                 innerPair.setOperation(random.choice(self.operations))
-                #pair.setLHS(innerPair)
                 pair.setOperation(random.choice(self.operations))
-                #pair.left_neg = random.choice([True, False])
             else:
-                innerPair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
-                #pair.setLHS(innerPair)
-                if (bvBinaryPredicate == True):
-                    pair.setOperation(random.choice(self.operations[2]))
+                innerPair.setOperation(random.choice(self.operations[0]))
+                if (bvBinaryPredicate == True and i == 0):
+                    pair.setOperation(random.choice(self.operations[1]))
                 else:
-                    pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
-                #pair.left_neg = random.choice([True, False])
+                    pair.setOperation(random.choice(self.operations[0]))
+            
             pair_subNodes = [innerPair]
             
             if i == (numPairs-1):
-                # pair.setRHS(random.choice(self.smtBooleans))
-                # pair.right_neg = random.choice([True, False])
                 pair_subNodes.append(random.choice(self.smtBooleans))
 
             else:
-                #pair.setRHS(self.generateNewPairs(i+1, numPairs, bvBinaryPredicate))
-                #pair.right_neg = random.choice([True, False])
                 pair_subNodes.append(self.generateNewPairs(i+1, numPairs, bvBinaryPredicate, arity))
             pair.setSubNodes(pair_subNodes)
             return pair
         else:
-            #pair.setLHS(random.choice(self.smtBooleans))
-            #pair.left_neg = random.choice([True, False])
             pair_subNodes = [random.choice(self.smtBooleans)]
             if(self.type == "Boolean"):
                 pair.setOperation(random.choice(self.operations))
             else:
-                if (bvBinaryPredicate == True):
-                    pair.setOperation(random.choice(self.operations[2]))
+                if (bvBinaryPredicate == True and i == 0):
+                    pair.setOperation(random.choice(self.operations[1]))
                 else:
-                    pair.setOperation(random.choice(self.operations[random.getrandbits(1)]))
-            #pair.setRHS(random.choice(self.smtBooleans))
-            #pair.right_neg = random.choice([True, False])
+                    pair.setOperation(random.choice(self.operations[0]))
             pair_subNodes.append(random.choice(self.smtBooleans))
             if i == (numPairs-1):
-                #pair.setRHS(random.choice(self.smtBooleans))
-                #pair.right_neg = random.choice([True, False])
                 pair_subNodes[-1] = random.choice(self.smtBooleans)
             else:
-                #pair.setRHS(self.generateNewPairs(i+1, numPairs, bvBinaryPredicate))
-                #pair.right_neg = random.choice([True, False])
                 pair_subNodes[-1] = self.generateNewPairs(i+1, numPairs, bvBinaryPredicate)
             pair.setSubNodes(pair_subNodes)
             return pair
@@ -132,12 +110,8 @@ class smtAssertion:
                 depths.append([i])
             targetdepth = random.choice(depths)
             self.smtPairs[0] = self.boolean_mutate(self.smtPairs[0], operator, targetdepth, 0, mutated=False) #booleans don't need a comparator, so only work on level 0
-
-
-
         elif self.type == "BV":
             bVConstruct = BV.BVConstruct()
-            #allowablestuff = bVConstruct.allowableConstructs[:]
             if not any(operator in subl for subl in bVConstruct.allowableConstructs):
                 raise Exception("Illegal operator for type BV\n")
                 return
@@ -159,28 +133,18 @@ class smtAssertion:
 
                     self.smtPairs[i] = self.bV_mutate(self.smtPairs[i], operator, allowableConstructs, targetdepth, 0, mutated=False)
 
-
-
-
-
     def boolean_mutate(self, pair, operator, targetdepth, depth, mutated = False):
-        #mutate = random.choice([False, True])
         if mutated == True or isinstance(pair, Boolean.BooleanVariable):
             return pair
         elif depth == targetdepth:
                 pair.operation = operator
                 mutated = True
-        '''if isinstance(pair.lhs, smtPair.smtPair):
-            pair.lhs =  self.boolean_mutate(pair.lhs, operator)
-        if isinstance(pair.rhs, smtPair.smtPair):
-            pair.rhs = self.boolean_mutate(pair.rhs, operator)'''
 
         for i in range(len(pair.subNodes)):
             pair.subNodes[i] = self.boolean_mutate(pair.subNodes[i], operator, targetdepth, depth+1, mutated)
         return pair
 
     def bV_mutate(self, pair, operator, allowableConstructs, targetdepth, depth, mutated=False):
-        #mutate = random.choice([False, True])
         if mutated or isinstance(pair, BV.BVVariable):
             return pair
 
@@ -191,14 +155,6 @@ class smtAssertion:
             elif operator in allowableConstructs[1] and pair.operation in allowableConstructs[1] and depth == targetdepth:
                 pair.operation = operator
                 mutated = True
-            elif operator in allowableConstructs[2] and pair.operation in allowableConstructs[2] and depth == targetdepth:
-                pair.operation = operator
-                mutated = True
-
-        '''if isinstance(pair.lhs, smtPair.smtPair):
-            pair.lhs =  self.bV_mutate(pair.lhs, operator, allowableConstructs)
-        if isinstance(pair.rhs, smtPair.smtPair):
-            pair.rhs =  self.bV_mutate(pair.rhs, operator, allowableConstructs)'''
 
         for i in range(len(pair.subNodes)):
             pair.subNodes[i] = self.bV_mutate(pair.subNodes[i], operator, allowableConstructs, targetdepth, depth+1, mutated)
